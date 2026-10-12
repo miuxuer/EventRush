@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.miuxuer.eventrush.mapper.TicketMapper">
+
+    <!--
+        查询某个演出下所有在售的票档。
+        票档主表只管价格和名称，余票和开票时间在 tb_ticket_sale 里，所以这里左连接把两张表拼成一条返回。
+        用左连接而不是内连接，是为了让没配库存的普通票档也能查出来（此时 stock / begin_time / end_time 为 null）。
+        status = 1 表示在售，下架和过期的票档不返回。
+    -->
+    <select id="queryTicketOfEvent" resultType="com.miuxuer.eventrush.entity.Ticket" parameterType="java.lang.Long">
+        SELECT
+            t.`id`, t.`event_id`, t.`title`, t.`sub_title`, t.`rules`, t.`pay_value`,
+            t.`actual_value`, t.`type`, ts.`stock`, ts.`begin_time`, ts.`end_time`
+        FROM tb_ticket t
+        LEFT JOIN tb_ticket_sale ts ON t.id = ts.ticket_id
+        WHERE t.event_id = #{eventId} AND t.status = 1
+    </select>
+</mapper>

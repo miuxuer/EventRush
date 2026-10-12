@@ -1,0 +1,89 @@
+package com.miuxuer.eventrush.entity;
+
+import com.baomidou.mybatisplus.annotation.IdType;
+import com.baomidou.mybatisplus.annotation.TableId;
+import com.baomidou.mybatisplus.annotation.TableName;
+import lombok.Data;
+import lombok.EqualsAndHashCode;
+import lombok.experimental.Accessors;
+
+import java.io.Serializable;
+import java.time.LocalDate;
+import java.time.LocalDateTime;
+
+/**
+ * 用户详情实体，保存用户的资料类信息，对应数据库表 tb_user_info。
+ * <p>
+ * 与 User 表通过用户 id 一对一关联：登录鉴权用的手机号、密码等放在 tb_user，
+ * 城市、个人介绍、粉丝关注数、积分等级等放在这里。
+ * </p>
+ *
+ * @author miuxuer
+ * @since 2026-10-12
+ */
+@Data
+@EqualsAndHashCode(callSuper = false)
+@Accessors(chain = true)
+@TableName("tb_user_info")
+public class UserInfo implements Serializable {
+
+    private static final long serialVersionUID = 1L;
+
+    /**
+     * 主键，用户id
+     */
+    @TableId(value = "user_id", type = IdType.AUTO)
+    private Long userId;
+
+    /**
+     * 城市名称
+     */
+    private String city;
+
+    /**
+     * 个人介绍，不要超过128个字符
+     */
+    private String introduce;
+
+    /**
+     * 粉丝数量
+     */
+    private Integer fans;
+
+    /**
+     * 关注的人的数量
+     */
+    private Integer followee;
+
+    /**
+     * 性别，0：男，1：女
+     */
+    private Boolean gender;
+
+    /**
+     * 生日
+     */
+    private LocalDate birthday;
+
+    /**
+     * 积分
+     */
+    private Integer credits;
+
+    /**
+     * 会员级别，0~9级,0代表未开通会员
+     */
+    private Boolean level;
+
+    /**
+     * 创建时间
+     */
+    private LocalDateTime createTime;
+
+    /**
+     * 更新时间
+     */
+    private LocalDateTime updateTime;
+
+
+}
